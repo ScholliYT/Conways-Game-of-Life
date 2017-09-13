@@ -5,7 +5,7 @@ public class Game {
 	private Cell[][] field;
 
 	public Game(int _sizeX, int _sizeY) {
-		field = new Cell[_sizeX][_sizeY];
+		field = new Cell[_sizeY][_sizeX];
 		generateField();
 	}
 
@@ -23,14 +23,14 @@ public class Game {
 		}
 	}
 
-	//Calculates state for next generation and applies it
+	// Calculates state for next generation and applies it
 	public void step() {
 		// set state for next generation
 		// Rows
 		for (int r = 0; r < field.length; r++) {
 			// Columns
 			for (int c = 0; c < field[0].length; c++) {
-				
+
 				int aliveNeighbors = getAliveNeighbors(r, c);
 				setCellsNextGen(field[r][c], aliveNeighbors);
 			}
@@ -45,7 +45,7 @@ public class Game {
 			}
 		}
 	}
-	
+
 	public void setCellsNextGenTest(Cell cell, int _aliveNeighbors) {
 		setCellsNextGen(cell, _aliveNeighbors);
 	}
@@ -58,7 +58,8 @@ public class Game {
 			// Go alive
 			cell.setAliveForNextGen(true);
 		}
-		// testing for == 2 || == 3 is not necessary because Cell will update to last state (alive)
+		// testing for == 2 || == 3 is not necessary because Cell will update to
+		// last state (alive)
 		else if (_aliveNeighbors > 3) {
 			// Die
 			cell.setAliveForNextGen(false);
@@ -101,6 +102,17 @@ public class Game {
 			}
 		}
 		return aliveNeighbors;
+	}
+
+	public void addGuiContent(GUI frame) {
+		// Rows
+		for (int r = 0; r < field.length; r++) {
+			// Columns
+			for (int c = 0; c < field[0].length; c++) {
+				field[r][c].setBtn(frame.addToPanel(field[r][c]));
+			}
+		}
+		step();
 	}
 
 }
