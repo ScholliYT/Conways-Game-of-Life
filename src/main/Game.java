@@ -1,8 +1,22 @@
 package main;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 public class Game {
 
 	private Cell[][] field;
+	private boolean autoRun;
+	private ScheduledExecutorService autoRunExecutor = Executors.newScheduledThreadPool(1);
+	private ScheduledFuture autoRunFuture;
+
+	public boolean isAutoRun() {
+		return autoRun;
+	}
+
+	private Runnable stepRunnable = () -> step();
 
 	public Game(int _sizeX, int _sizeY) {
 		field = new Cell[_sizeY][_sizeX];
@@ -115,4 +129,13 @@ public class Game {
 		step();
 	}
 
+	public void toggleAutoRun() {
+		if(autoRun) {
+			autoRunFuture.cancel(false);
+		} else {
+			autoRunFuture = autoRunExecutor.scheduleAtFixedRate(stepRunnable, 0, 2, TimeUnit.SECONDS);
+		}
+
+		autoRun = !autoRun;
+	}
 }

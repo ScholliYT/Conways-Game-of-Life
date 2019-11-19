@@ -1,7 +1,6 @@
 package main;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,6 +18,7 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel panel;
+	private JButton btnAutoRun;
 
 	/**
 	 * Create the frame.
@@ -31,21 +31,39 @@ public class GUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
+
 		JButton btnStep = new JButton("Step");
+		btnAutoRun = new JButton("Auto run");
 		btnStep.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				g.step();
-				
+
 			}
 		});
-		contentPane.add(btnStep, BorderLayout.SOUTH);
-		
+
+		btnAutoRun.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				g.toggleAutoRun();
+				if(g.isAutoRun()) {
+					btnAutoRun.setBackground(Color.GRAY);
+				}
+				else {
+					btnAutoRun.setBackground(Color.WHITE);
+				}
+			}
+		});
+		JPanel btnpanel = new JPanel();
+		btnpanel.add(btnStep);
+		btnpanel.add(btnAutoRun);
+
 		panel = new JPanel();
 		panel.setLayout(new GridLayout(_y, _x));
 		contentPane.add(panel, BorderLayout.CENTER);
+		contentPane.add(btnpanel, BorderLayout.SOUTH);
 	}
 	
 	public JButton addToPanel(Cell cell) {
